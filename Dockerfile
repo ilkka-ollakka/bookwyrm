@@ -35,4 +35,5 @@ ENV PATH=/venv/bin:$PATH
 
 COPY --from=build /app /app
 COPY --from=build /venv /venv
-USER bookwyrm
+
+ENTRYPOINT [ "/app/bookwyrm/setup.sh" ]
