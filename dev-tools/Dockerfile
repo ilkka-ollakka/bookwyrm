@@ -1,4 +1,4 @@
-FROM localhost/bookwyrm:latest
+FROM bookwyrm
 USER root
 WORKDIR /app/
 
@@ -15,5 +15,3 @@ RUN uv sync --extra dev
 WORKDIR /app/dev-tools
 RUN npm install .
 WORKDIR /app/
-
-WORKDIR /app
