@@ -34,6 +34,8 @@ def find_duplicate_author_names():
             print(
                 f"- {obj.remote_id}, {obj.name}{years} book editions found:{obj.num_books}"
             )
+    print("----------")
+    print(f"Total {len(dupes)} matching names found")
 
 
 class Command(BaseCommand):
@@ -45,7 +47,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         """run deduplications"""
         find_duplicate_author_names()
-        print("----------")
         print(
             "You should manually check each author id to determine if they are same author before thinking of merging"
         )
