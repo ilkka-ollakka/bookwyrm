@@ -1,0 +1,86 @@
+{
+    "publishers": [
+        "Baen Books"
+    ],
+    "number_of_pages": 315,
+    "isbn_10": [
+        "0671720856"
+    ],
+    "series": [
+        "Mutineers' Moon #1"
+    ],
+    "covers": [
+        9263523
+    ],
+    "physical_format": "Paperback",
+    "full_title": "Mutineers' moon",
+    "lc_classifications": [
+        "CPB Box no. 3167 vol. 3"
+    ],
+    "key": "/books/OL24847189M",
+    "authors": [
+        {
+            "key": "/authors/OL1550283A"
+        }
+    ],
+    "publish_places": [
+        "Riverdale, N.Y"
+    ],
+    "contributions": [
+        "Copyright Paperback Collection (Library of Congress)"
+    ],
+    "isbn_13": [
+        "9780671720858"
+    ],
+    "pagination": "315 p. ;",
+    "classifications": {},
+    "source_records": [
+        "marc:marc_loc_updates/v39.i19.records.utf8:15725442:881",
+        "marc:marc_loc_2016/BooksAll.2016.part38.utf8:140437641:881",
+        "ia:mutineersmoon0000webe",
+        "promise:bwb_daily_pallets_2022-03-17"
+    ],
+    "title": "Mutineers' Moon",
+    "lccn": [
+        "2010713322"
+    ],
+    "notes": "\"A Baen Books original\"--T.p. verso.",
+    "identifiers": {},
+    "languages": [
+        {
+            "key": "/languages/eng"
+        }
+    ],
+    "subjects": [
+        "Science fiction"
+    ],
+    "publish_date": "1991",
+    "publish_country": "nyu",
+    "by_statement": "David Weber",
+    "oclc_numbers": [
+        "24475550"
+    ],
+    "works": [
+        {
+            "key": "/works/OL8259681W"
+        }
+    ],
+    "type": {
+        "key": "/type/edition"
+    },
+    "ocaid": "mutineersmoon0000webe",
+    "local_id": [
+        "urn:bwbsku:P7-DHK-629",
+        "urn:bwbsku:O6-CZY-225"
+    ],
+    "latest_revision": 9,
+    "revision": 9,
+    "created": {
+        "type": "/type/datetime",
+        "value": "2011-07-26T20:12:13.155926"
+    },
+    "last_modified": {
+        "type": "/type/datetime",
+        "value": "2023-01-14T10:40:19.908981"
+    }
+}
