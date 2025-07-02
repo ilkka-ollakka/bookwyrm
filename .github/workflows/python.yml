@@ -34,66 +34,66 @@ jobs:
         ports:
           - 5432:5432
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.11
-        cache: pip
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pytest-github-actions-annotate-failures
-    - name: Set up .env
-      run: cp .env.example .env
-    - name: Check migrations up-to-date
-      run: python ./manage.py makemigrations --check -v 3
-    - name: Run Tests
-      run: pytest -n 3
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+          cache: pip
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+          pip install pytest-github-actions-annotate-failures
+      - name: Set up .env
+        run: cp .env.example .env
+      - name: Check migrations up-to-date
+        run: python ./manage.py makemigrations --check -v 3
+      - name: Run Tests
+        run: pytest -n 3
 
   pylint:
     name: Linting (pylint)
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.11
-        cache: pip
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Analyse code with pylint
-      run: pylint bookwyrm/
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+          cache: pip
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+      - name: Analyse code with pylint
+        run: pylint bookwyrm/
 
   mypy:
     name: Typing (mypy)
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.11
-        cache: pip
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Set up .env
-      run: cp .env.example .env
-    - name: Analyse code with mypy
-      run: mypy bookwyrm celerywyrm
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+          cache: pip
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+      - name: Set up .env
+        run: cp .env.example .env
+      - name: Analyse code with mypy
+        run: mypy bookwyrm celerywyrm
 
   black:
     name: Formatting (black; run ./bw-dev black to fix)
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
-    - uses: psf/black@stable
-      with:
-        version: "22.*"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - uses: psf/black@stable
+        with:
+          version: "22.*"
