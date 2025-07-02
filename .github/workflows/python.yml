@@ -42,15 +42,14 @@ jobs:
           cache: pip
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install .[dev]
-          pip install pytest-github-actions-annotate-failures
+          python -m pip install --upgrade uv
+          uv sync --extra dev
       - name: Set up .env
         run: cp .env.example .env
       - name: Check migrations up-to-date
-        run: python ./manage.py makemigrations --check -v 3
+        run: uv run python ./manage.py makemigrations --check -v 3
       - name: Run Tests
-        run: pytest -n 3
+        run: uv run pytest -n 3
 
   pylint:
     name: Linting (pylint)
@@ -64,10 +63,10 @@ jobs:
           cache: pip
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install .[dev]
+          python -m pip install uv
+          uv sync --extra dev
       - name: Analyse code with pylint
-        run: pylint bookwyrm/
+        run: uv run pylint bookwyrm/
 
   mypy:
     name: Typing (mypy)
@@ -81,12 +80,12 @@ jobs:
           cache: pip
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install .[dev]
+          python -m pip install --upgrade uv
+          uv sync --extra dev
       - name: Set up .env
         run: cp .env.example .env
       - name: Analyse code with mypy
-        run: mypy bookwyrm celerywyrm
+        run: uv run mypy bookwyrm celerywyrm
 
   black:
     name: Formatting (black; run ./bw-dev black to fix)
