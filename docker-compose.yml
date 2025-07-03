@@ -45,7 +45,7 @@ services:
     networks:
       - main
   web:
-    image: bookwyrm
+    image: ghcr.io/ilkka-ollakka/bookwyrm:pr-2
     build: .
     env_file: .env
     command: gunicorn bookwyrm.wsgi:application
@@ -84,7 +84,7 @@ services:
       - main
     restart: on-failure
   celery_worker:
-    image: bookwyrm
+    image: ghcr.io/ilkka-ollakka/bookwyrm:pr-2
     env_file: .env
     networks:
       - main
@@ -99,7 +99,7 @@ services:
     restart: on-failure
   celery_beat:
     env_file: .env
-    image: bookwyrm
+    image: ghcr.io/ilkka-ollakka/bookwyrm:pr-2
     networks:
       - main
     command: celery -A celerywyrm beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
@@ -111,7 +111,7 @@ services:
       - celery_worker
     restart: on-failure
   flower:
-    image: bookwyrm
+    image: ghcr.io/ilkka-ollakka/bookwyrm:pr-2
     command: celery -A celerywyrm flower --basic_auth=${FLOWER_USER}:${FLOWER_PASSWORD} --url_prefix=flower
     env_file: .env
     volumes:
