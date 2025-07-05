@@ -27,7 +27,7 @@ RUN uv sync
 
 FROM python:3.11-slim
 RUN addgroup --system app && adduser --system --group bookwyrm
-RUN apt-get update && apt-get install -y gettext libpq5 tidy libsass1 && apt-get clean
+RUN apt-get update && apt-get install -y gettext libpq5 tidy libsass1 gosu && apt-get clean
 WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1
@@ -35,5 +35,10 @@ ENV PATH=/venv/bin:$PATH
 
 COPY --from=build /app /app
 COPY --from=build /venv /venv
+COPY entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT [ "/app/bookwyrm/setup.sh" ]
+EXPOSE 8000
+VOLUME ["/app/exports", "/app/images", "/app/static"]
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+CMD ["gunicorn", "bookwyrm.wsgi:application"]

@@ -48,7 +48,6 @@ services:
     image: ghcr.io/ilkka-ollakka/bookwyrm:pr-2
     build: .
     env_file: .env
-    command: gunicorn bookwyrm.wsgi:application
     volumes:
       - static_volume:/app/static
       - media_volume:/app/images
