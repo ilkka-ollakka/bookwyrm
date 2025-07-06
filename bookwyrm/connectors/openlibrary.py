@@ -1,4 +1,5 @@
-""" openlibrary data connector """
+"""openlibrary data connector"""
+
 import re
 from typing import Any, Optional, Union, Iterator, Iterable
 
@@ -31,8 +32,12 @@ class Connector(AbstractConnector):
             Mapping("subtitle"),
             Mapping("description", formatter=get_description),
             Mapping("languages", formatter=get_languages),
-            Mapping("series", formatter=get_first),
-            Mapping("seriesNumber", remote_field="series_number"),
+            Mapping("series", formatter=parse_series),
+            Mapping(
+                "seriesNumber",
+                remote_field="series",
+                formatter=parse_series_number,
+            ),
             Mapping("subjects"),
             Mapping("subjectPlaces", remote_field="subject_places"),
             Mapping("isbn13", remote_field="isbn_13", formatter=get_first),
@@ -217,6 +222,27 @@ class Connector(AbstractConnector):
             if ignore_edition(edition_data):
                 continue
             create_edition_task.delay(self.connector.id, work.id, edition_data)
+
+
+def parse_series(data: list[str]) -> str | None:
+    """Parse series name from title listing"""
+    if not data:
+        return None
+    series_title = data[0]
+    if (series_match := re.search(r"(.+)(?:#\d+)$", series_title)) is None:
+        return series_title
+    series_name = series_match.group(1).strip()
+    return series_name
+
+
+def parse_series_number(data: list[str]) -> str | None:
+    """Parse series number from title listing"""
+    if not data:
+        return None
+    series_title = data[0]
+    if (series_match := re.search(r"(.+)#(\d+)$", series_title)) is None:
+        return None
+    return series_match.group(2)
 
 
 def ignore_edition(edition_data: JsonDict) -> bool:

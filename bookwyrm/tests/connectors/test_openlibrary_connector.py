@@ -1,4 +1,5 @@
-""" testing book data connectors """
+"""testing book data connectors"""
+
 import json
 import pathlib
 from unittest.mock import patch
@@ -13,6 +14,7 @@ from bookwyrm.connectors.openlibrary import ignore_edition
 from bookwyrm.connectors.openlibrary import get_languages, get_description
 from bookwyrm.connectors.openlibrary import pick_default_edition, get_openlibrary_key
 from bookwyrm.connectors.connector_manager import ConnectorException
+
 
 # pylint: disable=too-many-public-methods
 class Openlibrary(TestCase):
@@ -38,6 +40,9 @@ class Openlibrary(TestCase):
 
         work_file = pathlib.Path(__file__).parent.joinpath("../data/ol_work.json")
         edition_file = pathlib.Path(__file__).parent.joinpath("../data/ol_edition.json")
+        edition_series_file = pathlib.Path(__file__).parent.joinpath(
+            "../data/ol_series_edition.json"
+        )
         edition_md_file = pathlib.Path(__file__).parent.joinpath(
             "../data/ol_edition_markdown.json"
         )
@@ -48,6 +53,7 @@ class Openlibrary(TestCase):
         self.edition_data = json.loads(edition_file.read_bytes())
         self.edition_md_data = json.loads(edition_md_file.read_bytes())
         self.edition_list_data = json.loads(edition_list_file.read_bytes())
+        self.edition_series_data = json.loads(edition_series_file.read_bytes())
 
     def test_get_remote_id_from_data(self):
         """format the remote id from the data"""
@@ -62,6 +68,13 @@ class Openlibrary(TestCase):
         """detect if the loaded json is a work"""
         self.assertEqual(self.connector.is_work_data(self.work_data), True)
         self.assertEqual(self.connector.is_work_data(self.edition_data), False)
+
+    def test_parse_series_from_data(self):
+        """test series parsing from title"""
+        work = models.Work.objects.create(title="Hello Mutineers' Moon #1")
+        result = self.connector.create_edition_from_data(work, self.edition_series_data)
+        self.assertEqual(result.series, "Mutineers' Moon")
+        self.assertEqual(result.series_number, "1")
 
     @responses.activate
     def test_get_edition_from_work_data(self):
