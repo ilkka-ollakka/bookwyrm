@@ -1,15 +1,19 @@
 name: dev-wyrm
 services:
   web:
+    build: .
     volumes:
       - .:/app
   celery_worker:
+    build: .
     volumes:
       - .:/app
   celery_beat:
+    build: .
     volumes:
       - .:/app
   flower:
+    build: .
     volumes:
       - .:/app
   dev-tools:
