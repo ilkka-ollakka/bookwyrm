@@ -37,6 +37,7 @@ if [ -f VERSION ]; then
     fi
     echo -e "${NOTICE_FLAG} Will set new version to be ${WHITE}$INPUT_STRING"
     echo $INPUT_STRING > VERSION
+    sed -i -e "s|\(image: ghcr.io/bookwyrm/bookwyrm\):.*|\1:v${INPUT_STRING}|g" docker-compose.yml
 #    echo "## $INPUT_STRING ($NOW)" > tmpfile
 #    git log --pretty=format:"  - %s" "v$BASE_STRING"...HEAD >> tmpfile
 #    echo "" >> tmpfile
@@ -48,6 +49,7 @@ if [ -f VERSION ]; then
     echo -e "$PUSHING_MSG"
 #    git add CHANGELOG.md
     git add VERSION
+    git add docker-compose.yml
     git commit -m "Bump version to ${INPUT_STRING}."
     git tag -a -m "Tag version ${INPUT_STRING}." "v$INPUT_STRING"
     git push origin --tags
