@@ -11,7 +11,7 @@ from django.contrib.postgres.indexes import GinIndex, BloomIndex, Index
 from django.core.cache import cache
 from django.core.exceptions import ValidationError, PermissionDenied
 from django.db import models, transaction
-from django.db.models import Prefetch, ManyToManyField, Q
+from django.db.models import Prefetch, ManyToManyField, Q, UniqueConstraint
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from model_utils import FieldTracker
@@ -996,7 +996,14 @@ class SeriesBook(CollectionItemMixin, BookWyrmModel):
 
     class Meta:
         ordering = ["series_number"]
-        unique_together = [("book", "series"), ("series", "series_number")]
+        constraints = [
+            UniqueConstraint(name="book_series", fields=["book", "series"]),
+            UniqueConstraint(
+                name="series_seriesnumber",
+                fields=["series", "series_number"],
+                nulls_distinct=True,
+            ),
+        ]
 
     def get_remote_id(self):
         """need a remote id to provide the URI for series"""
