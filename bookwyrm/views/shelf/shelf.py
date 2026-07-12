@@ -18,15 +18,16 @@ from bookwyrm.activitypub import ActivitypubResponse
 from bookwyrm.settings import PAGE_LENGTH
 from bookwyrm.views.helpers import is_api_request, get_user_from_username
 from bookwyrm.book_search import search
+from bookwyrm.views.mixins import PrivateProfileMixin
 
 
-class Shelf(View):
+class Shelf(PrivateProfileMixin, View):
     """shelf page"""
 
     @vary_on_headers("Accept")
     def get(self, request, username, shelf_identifier=None):
         """display a shelf"""
-        user = get_user_from_username(request.user, username)
+        user = request.profile_user
 
         is_self = user == request.user
 
@@ -109,7 +110,7 @@ class Shelf(View):
             "books": page,
             "edit_form": forms.ShelfForm(instance=shelf if shelf_identifier else None),
             "create_form": forms.ShelfForm(),
-            "sort": request.GET.get("sort"),
+            "sort": request.GET.get("sort") or "-shelved_date",
             "page_range": paginated.get_elided_page_range(
                 page.number, on_each_side=2, on_ends=1
             ),
